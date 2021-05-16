@@ -1,0 +1,17 @@
+apiVersion: v2
+name: oe8080
+version: 1.0.0
+description: A optimally engineered 8080 computer running in kubernetes
+type: application
+keywords:
+  - 8080
+  - emulator
+  - spaceinvaders
+home: https://blog.davetcode.co.uk
+sources:
+  - https://github.com/21st-century-emulation
+maintainers:
+  - name: David Tyler
+    email: davet.code@gmail.com
+    url: https://blog.davetcode.co.uk/
+appVersion: "1.0.0"

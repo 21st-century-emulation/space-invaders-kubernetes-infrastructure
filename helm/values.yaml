@@ -1,0 +1,347 @@
+readByteApi: http://{{ .Values.memoryBus.name }}-service:8080/api/v1/readByte
+writeByteApi: http://{{ .Values.memoryBus.name }}-service:8080/api/v1/writeByte
+readRangeApi: http://{{ .Values.memoryBus.name }}-service:8080/api/v1/readRange
+initialiseMemoryApi: http://{{ .Values.memoryBus.name }}-service:8080/api/v1/initialise
+interruptServiceApi: http://{{ .Values.spaceInvadersUi.name }}-service:8080/api/v1/checkInterrupts
+initaliseCpuApi: http://{{ .Values.spaceInvadersUi.name }}-service:8080/api/v1/cpu/initialise
+startProgramApi: http://{{ .Values.fetchExecuteLoop.name }}-service:8080/api/v1/start
+programStateApi: http://{{ .Values.fetchExecuteLoop.name }}-service:8080/api/v1/state
+inApi: http://{{ .Values.spaceInvadersUi.name }}-service:8080/api/v1/in
+outApi: http://{{ .Values.spaceInvadersUi.name }}-service:8080/api/v1/out
+
+disassembler:
+  name: disassembler-8080
+  replicas: 3
+  image: ghcr.io/21st-century-emulation/disassembler-8080:latest
+  containerPort: 80
+  imagePullPolicy: Always
+
+memoryBus:
+  name: memory-bus
+  replicas: 1 # This service holds the address space in memory so must be run as a single replica
+  image: ghcr.io/21st-century-emulation/memory-bus-8080:latest
+  containerPort: 8080
+  imagePullPolicy: Always
+
+spaceInvadersUi:
+  name: space-invaders-ui
+  replicas: 1 # Signalr backend should run on a single replica
+  image: ghcr.io/21st-century-emulation/space-invaders-ui:latest
+  containerPort: 8080
+  imagePullPolicy: Always
+
+fetchExecuteLoop:
+  name: fetch-execute-loop
+  replicas: 1 # This service holds state of the CPU in memory so can't be replicated
+  image: ghcr.io/21st-century-emulation/emulator-backend-8080
+  tag: latest
+  containerPort: 8080
+  imagePullPolicy: Always
+
+opcodes:
+  - name: aci
+    image: ghcr.io/21st-century-emulation/aci
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: adc
+    image: ghcr.io/21st-century-emulation/adc
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: add
+    image: ghcr.io/21st-century-emulation/add
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: adi
+    image: ghcr.io/21st-century-emulation/adi
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: ana
+    image: ghcr.io/21st-century-emulation/ana
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: ani
+    image: ghcr.io/21st-century-emulation/ani
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: call
+    image: ghcr.io/21st-century-emulation/call
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: cma
+    image: ghcr.io/21st-century-emulation/cma
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: cmc
+    image: ghcr.io/21st-century-emulation/cmc
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: cmp
+    image: ghcr.io/21st-century-emulation/cmp
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: cpi
+    image: ghcr.io/21st-century-emulation/cpi
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: daa
+    image: ghcr.io/21st-century-emulation/daa
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: dad
+    image: ghcr.io/21st-century-emulation/dad
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 80
+  - name: dcr
+    image: ghcr.io/21st-century-emulation/dcr
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: dcx
+    image: ghcr.io/21st-century-emulation/dcx
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: di
+    image: ghcr.io/21st-century-emulation/di
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: ei
+    image: ghcr.io/21st-century-emulation/ei
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: inr
+    image: ghcr.io/21st-century-emulation/inr
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: inx
+    image: ghcr.io/21st-century-emulation/inx
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: jmp
+    image: ghcr.io/21st-century-emulation/jmp
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: lda
+    image: ghcr.io/21st-century-emulation/lda
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: ldax
+    image: ghcr.io/21st-century-emulation/ldax
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: lhld
+    image: ghcr.io/21st-century-emulation/lhld
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: lxi
+    image: ghcr.io/21st-century-emulation/lxi
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: mov
+    image: ghcr.io/21st-century-emulation/mov
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: mvi
+    image: ghcr.io/21st-century-emulation/mvi
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: noop
+    image: ghcr.io/21st-century-emulation/noop
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: ora
+    image: ghcr.io/21st-century-emulation/ora
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: ori
+    image: ghcr.io/21st-century-emulation/ori
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: pchl
+    image: ghcr.io/21st-century-emulation/pchl
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: pop
+    image: ghcr.io/21st-century-emulation/pop
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: push
+    image: ghcr.io/21st-century-emulation/push
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: ral
+    image: ghcr.io/21st-century-emulation/ral
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: rar
+    image: ghcr.io/21st-century-emulation/rar
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: ret
+    image: ghcr.io/21st-century-emulation/ret
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: rlc
+    image: ghcr.io/21st-century-emulation/rlc
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: rrc
+    image: ghcr.io/21st-century-emulation/rrc
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: rst
+    image: ghcr.io/21st-century-emulation/rst
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: sbb
+    image: ghcr.io/21st-century-emulation/sbb
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: sbi
+    image: ghcr.io/21st-century-emulation/sbi
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: shld
+    image: ghcr.io/21st-century-emulation/shld
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: sphl
+    image: ghcr.io/21st-century-emulation/sphl
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: sta
+    image: ghcr.io/21st-century-emulation/sta
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: stax
+    image: ghcr.io/21st-century-emulation/stax
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: stc
+    image: ghcr.io/21st-century-emulation/stc
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: sub
+    image: ghcr.io/21st-century-emulation/sub
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: sui
+    image: ghcr.io/21st-century-emulation/sui
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: xchg
+    image: ghcr.io/21st-century-emulation/xchg
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: xra
+    image: ghcr.io/21st-century-emulation/xra
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: xri
+    image: ghcr.io/21st-century-emulation/xri
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
+  - name: xthl
+    image: ghcr.io/21st-century-emulation/xthl
+    tag: latest
+    imagePullPolicy: Always
+    replicas: 3
+    containerPort: 8080
