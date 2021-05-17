@@ -27,7 +27,7 @@ Note: `./uninstall.sh` will remove all configuration installed through this proc
 
 The application makes use of many modern kubernetes first infrastructure pieces and crucially sets up the following architecture which is then described in detail below:
 
-<img src="./.github/static/space-invaders-kubernetes-architecture.svg">
+<img src="./.github/static/space-invaders-kubernetes-architecture.svg" style="background-color: white;">
 
 ### Linkerd
 
