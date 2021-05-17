@@ -83,7 +83,6 @@ spec:
       pathRegex: '/api/v1/start'
       method: POST
     isRetryable: false
-    timeout: 100ms
   - name: '/api/v1/state'
     condition:
       pathRegex: '/api/v1/state'
@@ -95,7 +94,6 @@ spec:
             min: 500
             max: 599
         isFailure: true
-    timeout: 50ms
   retryBudget:
     retryRatio: 0.5
     minRetriesPerSecond: 10

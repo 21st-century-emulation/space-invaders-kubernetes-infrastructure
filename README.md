@@ -1,6 +1,6 @@
-# 21st Century 8080 - Kubernetes Config
+# 21st Century Space Invaders - Kubernetes Config
 
-This repository contains the helm chart to install all of the 8080 emulator components into an existing kubernetes cluster.
+This repository contains the helm chart to install all of the components required to run a space invaders emulator based on an 8080 into an existing kubernetes cluster.
 
 ## Pre-requisites
 
@@ -37,6 +37,8 @@ The `emulator` & `monitoring` namespaces are configured to automatically inject 
 
 The linkerd dashboard is not exposed externally by default and can only be accessed by running `linkerd viz dashboard` to proxy traffic into the cluster.
 
+![Image of Linkerd dashboard](./.github/static/space-invaders-linkerd.png)
+
 In order to resolve issues with intermittent service failures all services in the `emulator` namespace have a [service profile](https://linkerd.io/2.10/features/service-profiles/) defined with retry behaviour.
 
 ### Monitoring
@@ -44,6 +46,8 @@ In order to resolve issues with intermittent service failures all services in th
 To provide consistent log shipping we make use of [fluentd](https://www.fluentd.org/) shipping logs written to `stdout` in pods to an [elasticsearch](https://www.elastic.co/elastic-stack) instance running in the `monitoring` namespace. This is then exposed via a [kibana](https://www.elastic.co/kibana) frontend which by default is exposed _unauthenticated_ on a public IP address using a `LoadBalancer` type service. Default insecure is a provably modern architcetural design choice and PRs fixing will be rejected.
 
 The Kibana IP address will be printed on completion of `install.sh` but can also be retrieved using `kubectl get svc kibana-kibana -n monitoring --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+
+![Image of kibana logs](./.github/static/space-invaders-logging-1.png)
 
 ### Emulator
 

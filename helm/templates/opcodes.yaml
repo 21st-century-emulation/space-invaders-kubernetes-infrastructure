@@ -79,7 +79,6 @@ spec:
             min: 500
             max: 599
         isFailure: true
-    timeout: 50ms
   retryBudget:
     retryRatio: 0.5
     minRetriesPerSecond: 10

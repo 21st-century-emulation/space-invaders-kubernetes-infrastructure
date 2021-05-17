@@ -73,7 +73,6 @@ spec:
             min: 500
             max: 599
         isFailure: true
-    timeout: 20ms
   - name: '/api/v1/readRange'
     condition:
       pathRegex: '/api/v1/readRange'
@@ -85,7 +84,6 @@ spec:
             min: 500
             max: 599
         isFailure: true
-    timeout: 20ms
   - name: '/api/v1/writeByte'
     condition:
       pathRegex: '/api/v1/writeByte'
@@ -97,13 +95,11 @@ spec:
             min: 500
             max: 599
         isFailure: true
-    timeout: 20ms
   - name: '/api/v1/initialise'
     condition:
       pathRegex: '/api/v1/initialise'
       method: POST
     isRetryable: false
-    timeout: 250ms
   retryBudget:
     retryRatio: 0.5
     minRetriesPerSecond: 10
