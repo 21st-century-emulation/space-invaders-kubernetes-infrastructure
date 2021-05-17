@@ -55,3 +55,56 @@ spec:
       port: 8080
       targetPort: {{ .Values.memoryBus.containerPort }}
 ---
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: {{ .Values.memoryBus.name }}-service.{{ .Release.Namespace }}.svc.cluster.local
+  namespace: {{ .Release.Namespace }}
+spec:
+  routes:
+  - name: '/api/v1/readByte'
+    condition:
+      pathRegex: '/api/v1/readByte'
+      method: GET
+    isRetryable: true
+    responseClasses:
+      - condition:
+          status:
+            min: 500
+            max: 599
+        isFailure: true
+    timeout: 20ms
+  - name: '/api/v1/readRange'
+    condition:
+      pathRegex: '/api/v1/readRange'
+      method: GET
+    isRetryable: true
+    responseClasses:
+      - condition:
+          status:
+            min: 500
+            max: 599
+        isFailure: true
+    timeout: 20ms
+  - name: '/api/v1/writeByte'
+    condition:
+      pathRegex: '/api/v1/writeByte'
+      method: POST
+    isRetryable: true
+    responseClasses:
+      - condition:
+          status:
+            min: 500
+            max: 599
+        isFailure: true
+    timeout: 20ms
+  - name: '/api/v1/initialise'
+    condition:
+      pathRegex: '/api/v1/initialise'
+      method: POST
+    isRetryable: false
+    timeout: 250ms
+  retryBudget:
+    retryRatio: 0.5
+    minRetriesPerSecond: 10
+    ttl: 5s

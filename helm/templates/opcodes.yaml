@@ -61,4 +61,28 @@ spec:
       port: 8080
       targetPort: {{ .containerPort }}
 ---
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: opcode-{{ .name }}-service.{{ $.Release.Namespace }}.svc.cluster.local
+  namespace: {{ $.Release.Namespace }}
+spec:
+  routes:
+  - name: '/api/v1/execute'
+    condition:
+      pathRegex: '/api/v1/execute'
+      method: POST
+    isRetryable: true
+    responseClasses:
+      - condition:
+          status:
+            min: 500
+            max: 599
+        isFailure: true
+    timeout: 50ms
+  retryBudget:
+    retryRatio: 0.5
+    minRetriesPerSecond: 10
+    ttl: 5s
+---
 {{- end }}
