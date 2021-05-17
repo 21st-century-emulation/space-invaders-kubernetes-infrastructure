@@ -27,7 +27,7 @@ Note: `./uninstall.sh` will remove all configuration installed through this proc
 
 The application makes use of many modern kubernetes first infrastructure pieces and crucially sets up the following architecture which is then described in detail below:
 
-<img src="./github/static/space-invaders-kubernetes-architecture.svg">
+<img src="./.github/static/space-invaders-kubernetes-architecture.svg">
 
 ### Linkerd
 
@@ -49,9 +49,9 @@ The Kibana IP address will be printed on completion of `install.sh` but can also
 
 The emulator service itself is run entirely within a single `emulator` namespace and consists of the following components
 
-| Component | Kubernetes Objects | Description |
-| --------- | ------------------ | ----------- |
-| Space Invaders UI | `LoadBalancer` type service with 3 replicas of the application | This provides the frontend UI and the API which allows new emulator instances to be started |
-| Fetch Execute Loop | `ClusterIP` service fronting a single replica (as it holds in memory state) | This is the core backend service which performs the fetch execute cycle |
-| Memory bus | `ClusterIP` service fronting a single replica (as it holds the address space in memory) | This provides access to the memory address space for the CPU |
-| Opcodes | One `ClusterIP` service per opcode with 3 replicas per opcode | These are the microservices providing the `/api/v1/execute` API endpoint for each opcode |
+| Component          | Kubernetes Objects                                                                      | Description                                                                                 |
+| ------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Space Invaders UI  | `LoadBalancer` type service with 3 replicas of the application                          | This provides the frontend UI and the API which allows new emulator instances to be started |
+| Fetch Execute Loop | `ClusterIP` service fronting a single replica (as it holds in memory state)             | This is the core backend service which performs the fetch execute cycle                     |
+| Memory bus         | `ClusterIP` service fronting a single replica (as it holds the address space in memory) | This provides access to the memory address space for the CPU                                |
+| Opcodes            | One `ClusterIP` service per opcode with 3 replicas per opcode                           | These are the microservices providing the `/api/v1/execute` API endpoint for each opcode    |
