@@ -41,6 +41,10 @@ The linkerd dashboard is not exposed externally by default and can only be acces
 
 In order to resolve issues with intermittent service failures all services in the `emulator` namespace have a [service profile](https://linkerd.io/2.10/features/service-profiles/) defined with retry behaviour.
 
+As can be seen in the following image, whilst we achieve 4 9s availability of each microservice there _are_ still microoutages on our microservices:
+
+![Image of Linkerd variance](./.github/static/space-invaders-linkerd-variance.png)
+
 ### Monitoring
 
 To provide consistent log shipping we make use of [fluentd](https://www.fluentd.org/) shipping logs written to `stdout` in pods to an [elasticsearch](https://www.elastic.co/elastic-stack) instance running in the `monitoring` namespace. This is then exposed via a [kibana](https://www.elastic.co/kibana) frontend which by default is exposed _unauthenticated_ on a public IP address using a `LoadBalancer` type service. Default insecure is a provably modern architcetural design choice and PRs fixing will be rejected.
@@ -59,3 +63,16 @@ The emulator service itself is run entirely within a single `emulator` namespace
 | Fetch Execute Loop | `ClusterIP` service fronting a single replica (as it holds in memory state)             | This is the core backend service which performs the fetch execute cycle                     |
 | Memory bus         | `ClusterIP` service fronting a single replica (as it holds the address space in memory) | This provides access to the memory address space for the CPU                                |
 | Opcodes            | One `ClusterIP` service per opcode with 3 replicas per opcode                           | These are the microservices providing the `/api/v1/execute` API endpoint for each opcode    |
+
+
+## Performance
+
+Deployed on an [AKS](https://azure.microsoft.com/en-gb/services/kubernetes-service/) cluster running with 3 nodes of size Standard_D4s_v3. Utilisation of the available CPU on those nodes does regularly go up to 100% as can be seen below:
+
+![Image of AKS node cpu](./.github/static/space-invaders-node-cpu.png)
+
+![Image of AKS node metrics](./.github/static/space-invaders-node-metrics.png)
+
+As can be seen below, over the period shown this was driven principally by the POP (scala) & LXI (java) microservices. Clearly I should have written more things in rust.
+
+![Image of AKS pod cpu](./.github/static/space-invaders-pod-metrics.png)
